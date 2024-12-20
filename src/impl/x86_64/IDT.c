@@ -72,7 +72,7 @@ extern void irq15();
 extern void irq60();
 extern void irq69();
 
-extern void LoadIDT();
+extern void LoadIDT(IDTPointer *idtr);
 
 typedef struct
 {
@@ -151,7 +151,7 @@ void _EnableInterrupt(UByte number, ULong handler, UShort type)
     
     IDT[number].offset_1 = (UShort)handler;
     IDT[number].selector = 0x08;
-    IDT[number].type = type | 0x8000; // Ensures the "present" bit is set
+    IDT[number].type = (type << 8) | 0x0000; // Lower byte is the IST
     IDT[number].offset_2 = (UShort)(handler >> 16);
     IDT[number].offset_3 = (UInt)(handler >> 32);
     IDT[number].zero = 0;
@@ -169,7 +169,7 @@ Bool InitInterrupts()
     IDTPtr.limit = sizeof(IDT_ENTRY) * 256 - 1;
     IDTPtr.base = (ULong)&IDT;
     
-    LoadIDT();
+    LoadIDT(&IDTPtr);
     
     for (UInt i = 0; i < 255; i++)
     {
