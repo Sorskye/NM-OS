@@ -76,7 +76,6 @@ isr_handler_stub:
 ;   sub rsp, 8         ; Ensure 16-byte alignment before calling C function
     mov rdi, rsp       ; Pass the argument to C function
     cld                ; Required by AMD64 Syste V ABI
-    xchg bx, bx
     call Fault_Handler
 ;   add rsp, 8         ; Restore alignment
     POPAQ
@@ -90,7 +89,6 @@ irq_common_stub:
 ;   sub rsp, 8         ; Ensure 16-byte alignment before calling C function
     mov rdi, rsp       ; Pass the argument to C function
     cld                ; Required by AMD64 Syste V ABI
-    xchg bx, bx
     call IrqHandler
 ;   add rsp, 8         ; Restore alignment
     POPAQ
