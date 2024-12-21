@@ -151,7 +151,7 @@ void _EnableInterrupt(UByte number, ULong handler, UShort type)
     
     IDT[number].offset_1 = (UShort)handler;
     IDT[number].selector = 0x08;
-    IDT[number].type = (type << 8) | 0x0000; // Lower byte is the IST
+    IDT[number].type = (type << 8) | 0x00; // Lower byte is the IST. Set IST to 0
     IDT[number].offset_2 = (UShort)(handler >> 16);
     IDT[number].offset_3 = (UInt)(handler >> 32);
     IDT[number].zero = 0;
