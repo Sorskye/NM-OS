@@ -3,7 +3,7 @@
 #include "io.h"
 #include "types.h"
 #include "branch.h"
-
+extern Bool InitInterrupts();
 
 void kernel_main()
 {
@@ -17,12 +17,11 @@ void kernel_main()
     //BRANCH(InitSerial(), print_str("SERIAL INIT OK\n");, print_str("SERIAL INIT FAIL\n"););
     BRANCH(InitInterrupts(), print_str("INTERRUPT INIT OK\n"); , print_str("INTERRUPT INIT FAIL\n"););
     
-    
     print_str("IDLE\n");
     
-    
-
+    // Division by 0 is undefined behaviour in C/C++.
+    // Use inline assembly to genarte one
     //int a = 1 / 0;
-
+    asm ("div %b0" :: "a"(0));
     
 }
